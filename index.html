@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="PulseSpeed — a clean, modern internet speed test for download, upload, ping, jitter, and connection details." />
+<title>PulseSpeed — Internet Speed Test</title>
+<style>
+:root{--bg:#08111f;--panel:#101d30;--panel2:#13243a;--text:#edf5ff;--muted:#8da3bd;--cyan:#52e5d0;--blue:#6a8cff;--line:rgba(255,255,255,.09);--glow:rgba(82,229,208,.18)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 50% -10%,#18395a 0,transparent 45%),var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
+a{color:inherit;text-decoration:none}.wrap{width:min(1120px,calc(100% - 36px));margin:auto}
+nav{height:78px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}.brand{display:flex;align-items:center;gap:11px;font-weight:800;letter-spacing:-.5px;font-size:21px}.logo{width:36px;height:36px;border-radius:12px;background:linear-gradient(135deg,var(--cyan),var(--blue));display:grid;place-items:center;color:#06121d;font-size:20px;box-shadow:0 0 28px var(--glow)}.brand span{color:var(--cyan)}.navlinks{display:flex;gap:26px;color:var(--muted);font-size:13px}.navlinks a:hover{color:var(--text)}.navpill{border:1px solid var(--line);border-radius:999px;padding:10px 15px;color:var(--text);font-size:12px}
+.hero{text-align:center;padding:58px 0 26px}.eyebrow{display:inline-flex;gap:8px;align-items:center;color:var(--cyan);font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;background:rgba(82,229,208,.08);border:1px solid rgba(82,229,208,.18);border-radius:99px;padding:8px 13px}.dot{width:6px;height:6px;background:var(--cyan);border-radius:50%;box-shadow:0 0 10px var(--cyan)}h1{font-size:clamp(38px,6vw,66px);line-height:1.03;letter-spacing:-3px;margin:22px 0 14px}.gradient{background:linear-gradient(100deg,#fff 12%,var(--cyan) 55%,#91a6ff);-webkit-background-clip:text;background-clip:text;color:transparent}.hero p{max-width:560px;margin:0 auto;color:var(--muted);font-size:15px;line-height:1.7}
+.test-layout{display:grid;grid-template-columns:1.15fr .85fr;gap:18px;align-items:stretch;margin:26px auto 24px}.card{background:linear-gradient(145deg,rgba(19,36,58,.96),rgba(13,25,42,.96));border:1px solid var(--line);border-radius:24px;box-shadow:0 20px 70px rgba(0,0,0,.16)}.main-test{padding:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:420px;position:relative;overflow:hidden}.main-test:before{content:"";position:absolute;width:300px;height:300px;border-radius:50%;background:var(--glow);filter:blur(80px);top:70px;pointer-events:none}.test-top{width:100%;display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1}.small-label{font-size:11px;color:var(--muted);letter-spacing:1.4px;text-transform:uppercase;font-weight:700}.server{font-size:12px;color:#dce8f7;border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:rgba(255,255,255,.025)}
+.gauge{width:260px;height:260px;position:relative;margin:24px 0 18px;display:grid;place-items:center;z-index:1}.gauge svg{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-135deg)}.gauge .track{fill:none;stroke:rgba(255,255,255,.08);stroke-width:10;stroke-linecap:round;stroke-dasharray:408 510}.gauge .progress{fill:none;stroke:url(#ggrad);stroke-width:10;stroke-linecap:round;stroke-dasharray:0 510;transition:stroke-dasharray .35s ease;filter:drop-shadow(0 0 7px rgba(82,229,208,.4))}.gauge-inner{text-align:center;position:relative}.gauge-num{font-size:57px;line-height:1;font-weight:800;letter-spacing:-3px}.gauge-unit{color:var(--muted);font-size:13px;margin-top:7px}.gauge-status{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);margin-top:15px;font-weight:800}.start-btn{border:0;border-radius:15px;padding:15px 30px;min-width:170px;background:linear-gradient(100deg,var(--cyan),#87f2df);color:#06121d;font-size:14px;font-weight:900;cursor:pointer;box-shadow:0 8px 28px rgba(82,229,208,.2);transition:transform .2s,filter .2s;z-index:1}.start-btn:hover{transform:translateY(-2px);filter:brightness(1.05)}.start-btn:disabled{opacity:.65;cursor:wait;transform:none}.test-note{font-size:11px;color:var(--muted);margin-top:13px;z-index:1;text-align:center;max-width:300px;line-height:1.5}
+.metrics-card{padding:22px}.metrics-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:17px}.metrics-head h2{font-size:15px;margin:0}.live-tag{color:var(--cyan);font-size:10px;font-weight:800;letter-spacing:1px}.metric{padding:17px 0;border-bottom:1px solid var(--line)}.metric:last-of-type{border-bottom:0}.metric-row{display:flex;align-items:center;justify-content:space-between;gap:12px}.metric-name{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:12px}.metric-icon{width:31px;height:31px;border-radius:10px;background:rgba(255,255,255,.05);display:grid;place-items:center;font-size:15px}.metric-val{font-size:24px;font-weight:800;letter-spacing:-.7px}.metric-val small{font-size:11px;color:var(--muted);font-weight:500;letter-spacing:0}.metric-desc{margin:8px 0 0 41px;color:#7087a2;font-size:10px}.meter{height:4px;background:rgba(255,255,255,.06);border-radius:5px;margin:11px 0 0 41px;overflow:hidden}.meter span{display:block;width:0;height:100%;background:linear-gradient(90deg,var(--blue),var(--cyan));border-radius:5px;transition:width .7s}
+.section{padding:42px 0}.section-title{text-align:center;margin-bottom:24px}.section-title h2{font-size:clamp(25px,4vw,36px);letter-spacing:-1px;margin:0 0 9px}.section-title p{color:var(--muted);font-size:13px;margin:0}.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.feature{padding:22px;border-radius:18px;background:rgba(16,29,48,.7);border:1px solid var(--line)}.feature-ico{width:40px;height:40px;display:grid;place-items:center;border-radius:13px;background:rgba(82,229,208,.09);font-size:19px;margin-bottom:16px}.feature h3{font-size:14px;margin:0 0 8px}.feature p{font-size:12px;color:var(--muted);line-height:1.65;margin:0}
+.details{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:18px}.detail{padding:16px;border:1px solid var(--line);background:rgba(16,29,48,.55);border-radius:15px}.detail label{display:block;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}.detail strong{font-size:13px;overflow-wrap:anywhere}
+.history{margin-top:18px;padding:22px}.history-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}.history h3{margin:0;font-size:14px}.clear-btn{background:transparent;border:1px solid var(--line);color:var(--muted);border-radius:9px;padding:7px 10px;cursor:pointer;font-size:11px}.history-empty{text-align:center;color:var(--muted);font-size:12px;padding:22px 0}.history-row{display:grid;grid-template-columns:1.2fr repeat(3,1fr);gap:8px;padding:12px 0;border-bottom:1px solid var(--line);font-size:12px;color:var(--muted)}.history-row strong{color:var(--text)}
+.faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.faq{padding:18px;border:1px solid var(--line);border-radius:15px;background:rgba(16,29,48,.5)}.faq h3{font-size:13px;margin:0 0 8px}.faq p{font-size:12px;line-height:1.65;color:var(--muted);margin:0}
+footer{margin-top:35px;border-top:1px solid var(--line);padding:24px 0 32px;color:var(--muted);font-size:11px}.footer-inner{display:flex;justify-content:space-between;gap:16px;align-items:center}.footer-inner strong{color:var(--text)}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(100px);opacity:0;transition:.3s;background:#182c43;border:1px solid var(--line);padding:12px 16px;border-radius:12px;font-size:12px;z-index:10;box-shadow:0 10px 30px #0005}.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+@media(max-width:760px){.navlinks{display:none}.hero{padding-top:40px}.test-layout{grid-template-columns:1fr}.main-test{min-height:390px}.feature-grid{grid-template-columns:1fr}.details{grid-template-columns:1fr 1fr}.faq-grid{grid-template-columns:1fr}.gauge{width:235px;height:235px}.gauge-num{font-size:51px}.footer-inner{align-items:flex-start;flex-direction:column}}@media(max-width:390px){.wrap{width:calc(100% - 22px)}.metrics-card,.main-test{padding:17px}.details{grid-template-columns:1fr 1fr}.metric-val{font-size:21px}h1{letter-spacing:-2px}}
+</style>
+</head>
+<body>
+<nav class="wrap">
+  <a class="brand" href="#"><div class="logo">ϟ</div>Pulse<span>Speed</span></a>
+  <div class="navlinks"><a href="#test">Speed test</a><a href="#features">Features</a><a href="#faq">FAQ</a></div>
+  <a class="navpill" href="#test">Run a test ↗</a>
+</nav>
+<main class="wrap">
+  <header class="hero">
+    <div class="eyebrow"><span class="dot"></span> Network diagnostics, simplified</div>
+    <h1>Your internet.<br><span class="gradient">No more guessing.</span></h1>
+    <p>Measure your connection in seconds with a sleek speed test for download, upload, ping, jitter, and connection quality.</p>
+  </header>
+  <section id="test" class="test-layout">
+    <div class="card main-test">
+      <div class="test-top"><span class="small-label">Connection test</span><span class="server" id="server">◎ Auto server</span></div>
+      <div class="gauge" aria-label="Internet speed gauge">
+        <svg viewBox="0 0 260 260" aria-hidden="true"><defs><linearGradient id="ggrad"><stop offset="0%" stop-color="#6a8cff"/><stop offset="100%" stop-color="#52e5d0"/></linearGradient></defs><circle class="track" cx="130" cy="130" r="105"/><circle class="progress" id="gaugeProgress" cx="130" cy="130" r="105"/></svg>
+        <div class="gauge-inner"><div class="gauge-num" id="gaugeNum">—</div><div class="gauge-unit">Mbps</div><div class="gauge-status" id="gaugeStatus">Ready to test</div></div>
+      </div>
+      <button class="start-btn" id="startBtn">Start speed test&nbsp; ↗</button>
+      <div class="test-note" id="testNote">For the most accurate result, pause downloads and close streaming apps.</div>
+    </div>
+    <aside class="card metrics-card">
+      <div class="metrics-head"><h2>Your connection stats</h2><span class="live-tag">● LIVE RESULTS</span></div>
+      <div class="metric"><div class="metric-row"><div class="metric-name"><span class="metric-icon">⇩</span> Download speed</div><div class="metric-val" id="downloadVal">— <small>Mbps</small></div></div><div class="metric-desc">How quickly data reaches your device</div><div class="meter"><span id="downloadMeter"></span></div></div>
+      <div class="metric"><div class="metric-row"><div class="metric-name"><span class="metric-icon">⇧</span> Upload speed</div><div class="metric-val" id="uploadVal">— <small>Mbps</small></div></div><div class="metric-desc">How quickly you can send data online</div><div class="meter"><span id="uploadMeter"></span></div></div>
+      <div class="metric"><div class="metric-row"><div class="metric-name"><span class="metric-icon">◷</span> Ping / Latency</div><div class="metric-val" id="pingVal">— <small>ms</small></div></div><div class="metric-desc">Response time — lower is generally better</div><div class="meter"><span id="pingMeter"></span></div></div>
+      <div class="metric"><div class="metric-row"><div class="metric-name"><span class="metric-icon">≈</span> Jitter</div><div class="metric-val" id="jitterVal">— <small>ms</small></div></div><div class="metric-desc">How much your latency varies</div><div class="meter"><span id="jitterMeter"></span></div></div>
+      <div class="metric"><div class="metric-row"><div class="metric-name"><span class="metric-icon">◉</span> Connection quality</div><div class="metric-val" id="qualityVal" style="font-size:17px">Not tested</div></div><div class="metric-desc" id="qualityDesc">Run a test to get your result</div></div>
+    </aside>
+  </section>
+  <section class="details" aria-label="Connection details">
+    <div class="detail"><label>Connection type</label><strong id="connType">Detecting…</strong></div>
+    <div class="detail"><label>Estimated downlink</label><strong id="estDown">Checking browser…</strong></div>
+    <div class="detail"><label>Browser</label><strong id="browserName">Detecting…</strong></div>
+    <div class="detail"><label>Test status</label><strong id="testStatus">Not started</strong></div>
+  </section>
+  <section id="features" class="section">
+    <div class="section-title"><h2>More than a speed number</h2><p>The essentials to understand how your connection behaves.</p></div>
+    <div class="feature-grid">
+      <article class="feature"><div class="feature-ico">⚡</div><h3>Fast, simple testing</h3><p>Run a quick browser-based check without installing an app. See your result in a clear, easy-to-read dashboard.</p></article>
+      <article class="feature"><div class="feature-ico">◷</div><h3>Latency & jitter</h3><p>Understand responsiveness for video calls, gaming, and other real-time activities—not just raw bandwidth.</p></article>
+      <article class="feature"><div class="feature-ico">▤</div><h3>Test history</h3><p>Keep recent results in this browser so you can compare your connection over time. Clear history whenever you want.</p></article>
+      <article class="feature"><div class="feature-ico">⌁</div><h3>Connection details</h3><p>View browser-reported connection type and estimated downlink when your browser supports the Network Information API.</p></article>
+      <article class="feature"><div class="feature-ico">◈</div><h3>Responsive by design</h3><p>A polished dark interface that adapts to mobile, tablet, and desktop screens.</p></article>
+      <article class="feature"><div class="feature-ico">⛨</div><h3>Privacy-friendly</h3><p>No account required. Test history stays in your browser's local storage and can be cleared from this page.</p></article>
+    </div>
+  </section>
+  <section class="card history" id="history">
+    <div class="history-head"><h3>Recent test history</h3><button class="clear-btn" id="clearHistory">Clear history</button></div>
+    <div id="historyList"><div class="history-empty">Your completed tests will appear here.</div></div>
+  </section>
+  <section id="faq" class="section">
+    <div class="section-title"><h2>Speed test, explained</h2><p>Know what each number means.</p></div>
+    <div class="faq-grid">
+      <article class="faq"><h3>What is download speed?</h3><p>Download speed measures how quickly data comes to your device. Higher speeds help with streaming, downloads, and multiple connected devices.</p></article>
+      <article class="faq"><h3>What is upload speed?</h3><p>Upload speed measures how quickly your device sends data, which matters for video calls, cloud backups, and sharing large files.</p></article>
+      <article class="faq"><h3>What is ping?</h3><p>Ping is the round-trip time for a small request. Lower latency often feels more responsive in games and live conversations.</p></article>
+      <article class="faq"><h3>Why can results vary?</h3><p>Wi-Fi signal, router load, network congestion, device activity, and the test server can all affect a result. Try a few tests at different times.</p></article>
+    </div>
+  </section>
+</main>
+<footer><div class="wrap footer-inner"><div class="brand"><div class="logo">ϟ</div>Pulse<span>Speed</span></div><div>Independent browser-based test interface · Results are estimates, not an ISP guarantee.</div><div>© <span id="year"></span> PulseSpeed</div></div></footer>
+<div class="toast" id="toast"></div>
+<script>
+const $ = id => document.getElementById(id);
+const state = {running:false, download:null, upload:null, ping:null, jitter:null};
+const TEST_URL = 'https://speed.cloudflare.com/__down?bytes=10000000';
+const UPLOAD_URL = 'https://speed.cloudflare.com/__up';
+function showToast(msg){$('toast').textContent=msg;$('toast').classList.add('show');setTimeout(()=>$('toast').classList.remove('show'),2800)}
+function setGauge(value, fraction){$('gaugeNum').textContent=value==null?'—':(value<10?value.toFixed(2):value.toFixed(1));$('gaugeProgress').style.strokeDasharray=`${Math.max(0,Math.min(408,408*fraction))} 510`;}
+function setMetric(id, value, unit, meterId, pct){$(id).innerHTML=(value==null?'—':(Number.isInteger(value)?value:value.toFixed(1)))+` <small>${unit}</small>`;if(meterId)$(meterId).style.width=Math.max(0,Math.min(100,pct||0))+'%'}
+function connectionInfo(){
+ const c=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
+ $('connType').textContent=c?(c.type||c.effectiveType||'Available'):'Not exposed by browser';
+ $('estDown').textContent=c&&c.downlink?c.downlink+' Mbps':'Not available';
+ const ua=navigator.userAgent; let b='Browser';
+ if(ua.includes('Edg/'))b='Microsoft Edge';else if(ua.includes('Chrome/'))b='Google Chrome';else if(ua.includes('Firefox/'))b='Mozilla Firefox';else if(ua.includes('Safari/')&&!ua.includes('Chrome/'))b='Safari';
+ $('browserName').textContent=b;
+}
+async function timedFetch(url, options={}){
+ const start=performance.now();const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),18000);
+ try{const r=await fetch(url,{...options,signal:controller.signal,cache:'no-store'});if(!r.ok)throw new Error('Network request failed');return {response:r,ms:performance.now()-start};}
+ finally{clearTimeout(timeout)}
+}
+async function measurePing(){
+ const samples=[];
+ for(let i=0;i<5;i++){try{const t=performance.now();await fetch('https://speed.cloudflare.com/__down?bytes=0&cacheBust='+Date.now()+'_'+i,{cache:'no-store',mode:'cors'});samples.push(performance.now()-t)}catch(e){}}
+ if(!samples.length)throw new Error('Latency test unavailable');
+ samples.sort((a,b)=>a-b);const avg=samples.reduce((a,b)=>a+b,0)/samples.length;
+ const diffs=samples.slice(1).map((v,i)=>Math.abs(v-samples[i]));const jitter=diffs.length?diffs.reduce((a,b)=>a+b,0)/diffs.length:0;
+ return {ping:Math.round(avg),jitter:Math.round(jitter*10)/10};
+}
+async function measureDownload(){
+ const bytes=10000000;const start=performance.now();
+ const {response}=await timedFetch('https://speed.cloudflare.com/__down?bytes='+bytes+'&cacheBust='+Date.now());
+ const blob=await response.blob();const seconds=(performance.now()-start)/1000;
+ return (blob.size*8/1000000)/seconds;
+}
+async function measureUpload(){
+ const bytes=2000000;const data=new Blob([new Uint8Array(bytes)],{type:'application/octet-stream'});const start=performance.now();
+ const {response}=await timedFetch('https://speed.cloudflare.com/__up',{method:'POST',body:data,headers:{'Content-Type':'application/octet-stream'}});
+ await response.text().catch(()=>{});const seconds=(performance.now()-start)/1000;
+ if(!response.ok)throw new Error('Upload test unavailable');
+ return (bytes*8/1000000)/seconds;
+}
+function quality(d,p,j){if(d>=100&&p<40&&j<15)return['Excellent','Great for 4K streaming, gaming, and busy households'];if(d>=25&&p<80)return['Good','Suitable for HD streaming, calls, and everyday use'];if(d>=5)return['Fair','Most everyday tasks should work; busy networks may struggle'];return['Needs attention','Try moving closer to Wi-Fi or checking your router'];}
+function saveHistory(){
+ let list=[];try{list=JSON.parse(localStorage.getItem('pulsespeed-history')||'[]')}catch(e){}
+ list.unshift({date:new Date().toLocaleString(),download:state.download,upload:state.upload,ping:state.ping,jitter:state.jitter});
+ list=list.slice(0,6);try{localStorage.setItem('pulsespeed-history',JSON.stringify(list))}catch(e){}
+ renderHistory();
+}
+function renderHistory(){let list=[];try{list=JSON.parse(localStorage.getItem('pulsespeed-history')||'[]')}catch(e){}
+ if(!list.length){$('historyList').innerHTML='<div class="history-empty">Your completed tests will appear here.</div>';return}
+ $('historyList').innerHTML=list.map(x=>`<div class="history-row"><span>${x.date}</span><span>↓ <strong>${x.download.toFixed(1)}</strong> Mbps</span><span>↑ <strong>${x.upload.toFixed(1)}</strong> Mbps</span><span>Ping <strong>${x.ping}</strong> ms</span></div>`).join('');
+}
+async function runTest(){
+ if(state.running)return;state.running=true;$('startBtn').disabled=true;$('startBtn').textContent='Testing connection…';$('testStatus').textContent='In progress';$('gaugeStatus').textContent='Measuring ping';$('testNote').textContent='Measuring your connection. This may take a few seconds.';
+ setGauge(0,0);['downloadVal','uploadVal','pingVal','jitterVal'].forEach(id=>$(id).innerHTML='— <small>'+(id==='pingVal'||id==='jitterVal'?'ms':'Mbps')+'</small>');
+ ['downloadMeter','uploadMeter','pingMeter','jitterMeter'].forEach(id=>$(id).style.width='0%');
+ try{
+   $('server').textContent='◎ Cloudflare edge';
+   const latency=await measurePing();state.ping=latency.ping;state.jitter=latency.jitter;
+   setMetric('pingVal',state.ping,'ms','pingMeter',Math.max(4,100-Math.min(100,state.ping)));setMetric('jitterVal',state.jitter,'ms','jitterMeter',Math.max(4,100-Math.min(100,state.jitter*4)));
+   $('gaugeStatus').textContent='Measuring download';
+   state.download=await measureDownload();setMetric('downloadVal',state.download,'Mbps','downloadMeter',Math.min(100,state.download));setGauge(state.download,Math.min(1,state.download/200));
+   $('gaugeStatus').textContent='Measuring upload';
+   try{state.upload=await measureUpload();}catch(e){state.upload=null}
+   if(state.upload==null){$('uploadVal').innerHTML='N/A <small>blocked</small>';$('uploadMeter').style.width='0%';}
+   else setMetric('uploadVal',state.upload,'Mbps','uploadMeter',Math.min(100,state.upload));
+   const [label,desc]=quality(state.download,state.ping,state.jitter);$('qualityVal').textContent=label;$('qualityDesc').textContent=desc;
+   $('testStatus').textContent='Completed';$('gaugeStatus').textContent='Test complete';$('testNote').textContent='Results can vary with Wi-Fi, congestion, device activity, and test server load.';$('startBtn').textContent='Test again ↻';saveHistory();
+ }catch(e){
+   $('testStatus').textContent='Could not complete';$('gaugeStatus').textContent='Test failed';$('testNote').textContent='The test endpoint may be blocked by your network or browser. Check your connection and try again.';showToast('Test could not finish. Please try again.');$('startBtn').textContent='Try again ↻';
+ }finally{state.running=false;$('startBtn').disabled=false;}
+}
+$('startBtn').addEventListener('click',runTest);
+$('clearHistory').addEventListener('click',()=>{localStorage.removeItem('pulsespeed-history');renderHistory();showToast('Test history cleared')});
+$('year').textContent=new Date().getFullYear();connectionInfo();renderHistory();
+</script>
+</body>
+</html>
